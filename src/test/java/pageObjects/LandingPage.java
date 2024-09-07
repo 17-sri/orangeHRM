@@ -19,11 +19,12 @@ public class LandingPage extends AbstractComponents {
 	public void loginApplication(String uname, String pwd ) {
 		userName.sendKeys(uname);
 		password.sendKeys(pwd);
-		userName.submit();
-		
+		userName.submit();	
 	}
 	public void goTo() {
 		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
 	}
-
+	public void logout() {
+		
+	}
 }
