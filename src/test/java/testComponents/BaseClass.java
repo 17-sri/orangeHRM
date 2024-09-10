@@ -3,7 +3,9 @@ package testComponents;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -37,12 +39,13 @@ public class BaseClass {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		return driver;
 	}
-	public String captureScreen(String testCaseName, WebDriver driver) throws IOException {
+	public String getScreenshot(String testCaseName, WebDriver driver) throws IOException {
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		TakesScreenshot ts = (TakesScreenshot) driver;
 		File source = ts.getScreenshotAs(OutputType.FILE);
-		File file = new File(System.getProperty("user.dir") + "//reports//" + testCaseName + ".png");
+		File file = new File(System.getProperty("user.dir") + "//screenshots//" + testCaseName + "_" +timeStamp+ ".png");
 		FileUtils.copyFile(source, file);
-		return System.getProperty("user.dir") + "//reports//" + testCaseName + ".png";
+		return System.getProperty("user.dir") + "//screenshots//" + testCaseName+".png";
 	}
 
 	@BeforeMethod(alwaysRun = true) // if we want to run in groups, we should mention (alwaysRun = true) for

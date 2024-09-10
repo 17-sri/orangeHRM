@@ -16,6 +16,8 @@ public class LandingPage extends AbstractComponents {
 	WebElement password;
 	@FindBy(xpath = "//button[text()=' Login ']")
 	WebElement btnSubmit;
+	@FindBy(css = ".oxd-text.oxd-text--p.oxd-alert-content-text")
+	WebElement errMessage;
 
 	public HomePage loginApplication(String uname, String pwd) {
 		userName.sendKeys(uname);
@@ -29,7 +31,8 @@ public class LandingPage extends AbstractComponents {
 		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
 	}
 
-	public void logout() {
-
+	public String getErrorMessage(){
+		waitForWebElementToAppear(errMessage);
+		return errMessage.getText();
 	}
 }
