@@ -1,3 +1,4 @@
+
 package testComponents;
 
 import java.text.SimpleDateFormat;
@@ -19,8 +20,7 @@ public class ExtentReporterNG {
 		ExtentReports extent = new ExtentReports();
 		extent.attachReporter(reporter);
 		extent.setSystemInfo("TestEngineer", "SRIKANTH V");
-		extent.setSystemInfo("Application", "orangeHRM");
-		
+		extent.setSystemInfo("Application", "demo_E-com");
 		return extent;
 	}
 }

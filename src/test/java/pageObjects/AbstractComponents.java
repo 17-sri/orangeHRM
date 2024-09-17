@@ -19,12 +19,4 @@ public class AbstractComponents {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOf(findEle));
 	}
-	
-	
-	
-	
-	
-	
-	
-
 }

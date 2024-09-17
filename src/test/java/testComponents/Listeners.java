@@ -1,6 +1,5 @@
-package testComponents;
 
-import java.io.IOException;
+package testComponents;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
@@ -18,7 +17,7 @@ public class Listeners extends BaseClass implements ITestListener {
 	@Override
 	public void onTestStart(ITestResult result) {
 		test = extent.createTest(result.getMethod().getMethodName());
-		extentTest.set(test);//assigning unique thread id for being thread safe
+		extentTest.set(test);      //assigning unique thread id for being thread safe
 	}
 
 	@Override
@@ -28,20 +27,15 @@ public class Listeners extends BaseClass implements ITestListener {
 
 	@Override
 	public void onTestFailure(ITestResult result) {
-		test.log(Status.FAIL, "     Test Passed");
-		extentTest.get().fail(result.getThrowable());
-		try {
-			driver = (WebDriver) result.getTestClass().getRealClass().getField("driver").get(result.getInstance());
-		} catch (Exception exe) {
-			exe.printStackTrace();
-		}
-		String filePath = null;
-		try {
-			filePath = getScreenshot(result.getMethod().getMethodName(), driver);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		extentTest.get().addScreenCaptureFromPath(filePath, result.getMethod().getMethodName());
+	    extentTest.get().log(Status.FAIL, "Test failed");
+	    extentTest.get().fail(result.getThrowable());
+	    try {
+	        driver = (WebDriver) result.getTestClass().getRealClass().getField("driver").get(result.getInstance());
+	        String filePath = getScreenshot(result.getMethod().getMethodName(), driver);
+	        extentTest.get().addScreenCaptureFromPath(filePath, result.getMethod().getMethodName());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	@Override

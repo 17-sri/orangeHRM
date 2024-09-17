@@ -21,9 +21,10 @@ import pageObjects.LandingPage;
 public class BaseClass {
 	public WebDriver driver;
 	public LandingPage landingPage;
+	Properties properties = new Properties();
 
 	public WebDriver initializeDriver() throws IOException {
-		Properties properties = new Properties();
+		
 		FileInputStream fileInputStream = new FileInputStream(
 				System.getProperty("user.dir") + "\\src\\test\\java\\utilities\\GlobalData.properties");
 		properties.load(fileInputStream);
@@ -39,17 +40,32 @@ public class BaseClass {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		return driver;
 	}
-	public String getScreenshot(String testCaseName, WebDriver driver) throws IOException {
-		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-		TakesScreenshot ts = (TakesScreenshot) driver;
-		File source = ts.getScreenshotAs(OutputType.FILE);
-		File file = new File(System.getProperty("user.dir") + "//screenshots//" + testCaseName + "_" +timeStamp+ ".png");
-		FileUtils.copyFile(source, file);
-		return System.getProperty("user.dir") + "//screenshots//" + testCaseName+".png";
-	}
+	
+	 public String getUsername() {
+	        return properties.getProperty("username");
+	    }
 
-	@BeforeMethod(alwaysRun = true) // if we want to run in groups, we should mention (alwaysRun = true) for
-	// prerequisites
+	    public String getPassword() {
+	        return properties.getProperty("password");
+	    }
+	    
+	    public void login() {
+	    	String username = getUsername();
+	        String password = getPassword();
+			landingPage.loginApplication(username, password);
+	    }
+	    public String getScreenshot(String testCaseName, WebDriver driver) throws IOException {
+			String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+			TakesScreenshot ts = (TakesScreenshot) driver;
+			File source = ts.getScreenshotAs(OutputType.FILE);
+			String filePath = System.getProperty("user.dir") + "//screenshots//" + testCaseName + timeStamp+ ".png";
+			File file = new File(filePath);
+			FileUtils.copyFile(source, file);
+			return filePath;
+		}
+
+	@BeforeMethod(alwaysRun = true)
+	//if we want to run in groups, we should mention (alwaysRun = true) for prerequisites
 	public LandingPage launchApplication() throws IOException {
 		driver = initializeDriver();
 		landingPage = new LandingPage(driver);
@@ -57,10 +73,9 @@ public class BaseClass {
 		return landingPage;
 	}
 
-	@AfterMethod(alwaysRun = true) // if we want to run in groups, we should mention (alwaysRun = true) for
-	// postrequisites
+	@AfterMethod(alwaysRun = true)
+	//if we want to run in groups, we should mention (alwaysRun = true) for postrequisites
 	public void tearDown() {
 		driver.quit();
 	}
-
 }
